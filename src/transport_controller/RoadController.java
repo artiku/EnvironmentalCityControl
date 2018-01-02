@@ -64,11 +64,37 @@ public class RoadController {
         cityEntranceList.add(crossroad2);
         cityEntranceList.add(crossroad3);
 
-        buildCars(cityEntranceList);
+        testCarGroup(cityEntranceList);
+//        buildCars(cityEntranceList);
     }
 
-    public static void buildCars(List<Crossroad> cityEntranceList) {
+    private static void buildCars(List<Crossroad> cityEntranceList) {
 
+        ExecutorService e = Executors.newFixedThreadPool(200);
+        Random r = new Random();
+
+        for (int i = 0; i < 90; i++) {
+            int randomIndex = r.nextInt(cityEntranceList.size());
+            e.execute(new Car(cityEntranceList.get(randomIndex), new DieselEngine()));
+        }
+
+        for (int i = 0; i < 90; i++) {
+            int randomIndex = r.nextInt(cityEntranceList.size());
+            e.execute(new Car(cityEntranceList.get(randomIndex), new PetrolEngine()));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = r.nextInt(cityEntranceList.size());
+            e.execute(new Car(cityEntranceList.get(randomIndex), new LemonadeEngine()));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = r.nextInt(cityEntranceList.size());
+            e.execute(new Car(cityEntranceList.get(randomIndex), new ElectricEngine()));
+        }
+    }
+
+    private static void testCarGroup(List<Crossroad> cityEntranceList) {
         Car car = new Car(cityEntranceList.get(0), new DieselEngine());
         Car car1 = new Car(cityEntranceList.get(1), new DieselEngine());
         Car car2 = new Car(cityEntranceList.get(2), new DieselEngine());
@@ -83,28 +109,5 @@ public class RoadController {
         car33.start();
         carE1.start();
         carP1.start();
-
-//        ExecutorService e = Executors.newFixedThreadPool(200);
-//        Random r = new Random();
-//
-//        for (int i = 0; i < 90; i++) {
-//            int randomIndex = r.nextInt(cityEntranceList.size());
-//            e.execute(new Car(cityEntranceList.get(randomIndex), new DieselEngine()));
-//        }
-//
-//        for (int i = 0; i < 90; i++) {
-//            int randomIndex = r.nextInt(cityEntranceList.size());
-//            e.execute(new Car(cityEntranceList.get(randomIndex), new PetrolEngine()));
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//            int randomIndex = r.nextInt(cityEntranceList.size());
-//            e.execute(new Car(cityEntranceList.get(randomIndex), new LemonadeEngine()));
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//            int randomIndex = r.nextInt(cityEntranceList.size());
-//            e.execute(new Car(cityEntranceList.get(randomIndex), new ElectricEngine()));
-//        }
     }
 }

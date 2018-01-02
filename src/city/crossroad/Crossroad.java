@@ -15,4 +15,8 @@ public class Crossroad {
     public void driveThrough(Car car) {
         //Nothing in this class, what can't be said about classes that extend
     }
+
+    public int getCrossroadId() {
+        return crossroadId;
+    }
 }

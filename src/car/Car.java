@@ -17,10 +17,12 @@ public class Car extends Thread{
     private static int carCounter = 0;
     private int carId = carCounter++;
 
+
     public Car(Crossroad startPosition, Engine engineType) {
         this.position = startPosition;
         this.engineType = engineType;
     }
+
 
     @Override
     public void run() {
@@ -28,6 +30,7 @@ public class Car extends Thread{
             drive();
         }
     }
+
 
     private void drive() {
 
@@ -54,7 +57,7 @@ public class Car extends Thread{
     private void travel() {
         int travelTime = 3 + (int)(Math.random() * 18);
 
-        System.out.println(this.toString() + "Travelled " + travelTime + "ms and " + roadsDriven % 7 + " roads");
+        System.out.println(this + " Travelled " + travelTime + "ms and " + roadsDriven % 7 + " roads");
 
         try {
             Thread.sleep(travelTime);
@@ -82,16 +85,8 @@ public class Car extends Thread{
         this.environmentCentre = environmentCentre;
     }
 
-    public Crossroad getPosition() {
-        return position;
-    }
-
-    public void setPosition(Crossroad position) {
-        this.position = position;
-    }
-
-    public int getRoadsDriven() {
-        return roadsDriven;
+    public int getCarId() {
+        return carId;
     }
 
     public Engine getEngineType() {

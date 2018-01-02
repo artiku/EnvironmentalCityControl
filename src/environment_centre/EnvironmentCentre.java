@@ -11,6 +11,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static constants.Constants.POLLUTION_DIESEL_ENGINE_LIMIT;
+import static constants.Constants.POLLUTION_PETROL_ENGINE_LIMIT;
+
 public class EnvironmentCentre {
 
     private List<Car> registeredCarsInTown;
@@ -38,9 +41,9 @@ public class EnvironmentCentre {
 
     public synchronized boolean askPermission(Car car) throws InterruptedException {
         System.err.println(pollutionAmount.get());
-        if (pollutionAmount.get() >= 4000 && car.getEngineType() instanceof DieselEngine) {
+        if (pollutionAmount.get() >= POLLUTION_DIESEL_ENGINE_LIMIT && car.getEngineType() instanceof DieselEngine) {
              return this.startTimer();
-        } else if (pollutionAmount.get() >= 5000 && car.getEngineType() instanceof PetrolEngine) {
+        } else if (pollutionAmount.get() >= POLLUTION_PETROL_ENGINE_LIMIT && car.getEngineType() instanceof PetrolEngine) {
             return this.startTimer();
         }
         return true;

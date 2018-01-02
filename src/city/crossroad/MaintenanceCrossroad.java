@@ -1,6 +1,7 @@
 package city.crossroad;
 
 import car.Car;
+import constants.Constants;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,6 +10,9 @@ import java.nio.file.StandardOpenOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static constants.Constants.FINISHED_MAINTENANCE_FILENAME;
+import static constants.Constants.MAINTENANCE_TIME;
 
 public class MaintenanceCrossroad extends Crossroad {
 
@@ -23,7 +27,7 @@ public class MaintenanceCrossroad extends Crossroad {
         try {
             System.out.println(String.format("Car #%s on the maintenance", car.getCarId()));
 
-            int timeToWait = 50 * carNumberInQueue.incrementAndGet();
+            int timeToWait = MAINTENANCE_TIME * carNumberInQueue.incrementAndGet();
             Thread.sleep(timeToWait);
             carNumberInQueue.decrementAndGet();
 
@@ -31,7 +35,7 @@ public class MaintenanceCrossroad extends Crossroad {
                     car, this.getCrossroadId(), timeToWait);
             System.out.print(textInfo);
 
-            writeIntoLogFile(textInfo, "logfiles/finished_maintenance.txt");
+            writeIntoLogFile(textInfo, FINISHED_MAINTENANCE_FILENAME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

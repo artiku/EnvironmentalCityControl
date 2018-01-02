@@ -7,6 +7,9 @@ import environment_centre.EnvironmentCentre;
 import java.util.Random;
 import java.util.Set;
 
+import static constants.Constants.CAR_LOWER_TRAVEL_LIMIT;
+import static constants.Constants.CAR_UPPER_TRAVEL_LIMIT;
+
 public class Car extends Thread{
 
     private EnvironmentCentre environmentCentre;
@@ -55,7 +58,7 @@ public class Car extends Thread{
     }
 
     private void travel() {
-        int travelTime = 3 + (int)(Math.random() * 18);
+        int travelTime = CAR_LOWER_TRAVEL_LIMIT + (int)(Math.random() * CAR_UPPER_TRAVEL_LIMIT);
 
         System.out.println(this + " Travelled " + travelTime + "ms and " + roadsDriven % 7 + " roads");
 

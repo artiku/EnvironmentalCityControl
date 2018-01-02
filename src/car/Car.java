@@ -44,7 +44,7 @@ public class Car extends Thread{
         }
         if (roadsDriven % 7 == 0) {
             try {
-                environmentCentre.askPermission(this);
+                while(!environmentCentre.askPermission(this));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -52,9 +52,9 @@ public class Car extends Thread{
     }
 
     private void travel() {
-        int travelTime = 30 + (int)(Math.random() * 180);
+        int travelTime = 3 + (int)(Math.random() * 18);
 
-        System.out.println(this.toString() + "Travelled " + travelTime + "ms");
+        System.out.println(this.toString() + "Travelled " + travelTime + "ms and " + roadsDriven % 7 + " roads");
 
         try {
             Thread.sleep(travelTime);

@@ -7,6 +7,7 @@ import city.RoadSystem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class EnvironmentCentre {
     private RoadSystem roadSystem;
     private AtomicInteger pollutionAmount = new AtomicInteger(0);
     private Thread timer;
-    private boolean timerStarted = false;
+    private AtomicBoolean timerStarted = new AtomicBoolean(false);
 
     public EnvironmentCentre(RoadSystem roadSystem) {
         this.registeredCarsInTown = new ArrayList<>();
@@ -35,21 +36,26 @@ public class EnvironmentCentre {
         pollutionAmount.addAndGet(pollutionEmitted);
     }
 
-    public synchronized void askPermission(Car car) throws InterruptedException {
+    public synchronized boolean askPermission(Car car) throws InterruptedException {
         System.err.println(pollutionAmount.get());
         if (pollutionAmount.get() >= 4000 && car.getEngineType() instanceof DieselEngine) {
-            this.startTimer();
+             return this.startTimer();
         } else if (pollutionAmount.get() >= 5000 && car.getEngineType() instanceof PetrolEngine) {
-            this.startTimer();
+            return this.startTimer();
         }
+        return true;
     }
 
-    private synchronized void startTimer() throws InterruptedException {
-        if (!timerStarted) {
+    private synchronized boolean startTimer() throws InterruptedException {
+        if (!timerStarted.get()) {
+            System.err.println(pollutionAmount.get());
+            timerStarted.set(true);
+            System.err.println("DIESEL or/and GASOLINE CARS SHOULD NOT PASS");
             timer = new Thread(new Timer(this));
             timer.start();
-            wait();
         }
+        wait();
+        return false;
     }
 
     synchronized void pollutionNullifier() {
@@ -59,8 +65,9 @@ public class EnvironmentCentre {
         } else {
             pollutionAmount.set(0);
         }
+        System.err.println("PURIFIED to " + pollutionAmount.get());
         notifyAll();
-        timerStarted = false;
+        timerStarted.set(false);
     }
 
     private boolean numberOfInnerCombustionEnginesAboveLimit() {

@@ -5,4 +5,9 @@ public class LemonadeEngine implements Engine {
     public float emitPollution() {
         return 0.5f;
     }
+
+    @Override
+    public String toString() {
+        return "Lemonade";
+    }
 }

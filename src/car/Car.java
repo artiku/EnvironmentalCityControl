@@ -14,6 +14,8 @@ public class Car extends Thread{
     private Crossroad position;
     private Random randomGenerator = new Random();
     private Engine engineType;
+    private static int carCounter = 0;
+    private int carId = carCounter++;
 
     public Car(Crossroad startPosition, Engine engineType) {
         this.position = startPosition;
@@ -27,12 +29,11 @@ public class Car extends Thread{
         }
     }
 
-    public void drive() {
+    private void drive() {
 
-        this.travel();
-
-        this.position = this.findNewDirection();
         this.position.driveThrough(this);
+        this.travel();
+        this.position = this.findNewDirection();
         roadsDriven++;
         this.travelConditions();
     }
@@ -42,13 +43,18 @@ public class Car extends Thread{
             environmentCentre.sendData(this);
         }
         if (roadsDriven % 7 == 0) {
-            environmentCentre.askPermission(this);
+            try {
+                environmentCentre.askPermission(this);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void travel() {
-        int travelTime = 3 + (int)(Math.random() * 18);
-        System.out.println(travelTime);
+        int travelTime = 30 + (int)(Math.random() * 180);
+
+        System.out.println(this.toString() + "Travelled " + travelTime + "ms");
 
         try {
             Thread.sleep(travelTime);
@@ -58,7 +64,7 @@ public class Car extends Thread{
     }
 
     private Crossroad findNewDirection() {
-        Set<Crossroad> adjacentCrossroads = environmentCentre.getCityRoadsystem().getAdjacentCrossroads(position);
+        Set<Crossroad> adjacentCrossroads = environmentCentre.getCityRoadSystem().getAdjacentCrossroads(position);
         int randomIndex = this.randomGenerator.nextInt(adjacentCrossroads.size());
         int i = 0;
         for(Crossroad crossroad : adjacentCrossroads)
@@ -76,14 +82,6 @@ public class Car extends Thread{
         this.environmentCentre = environmentCentre;
     }
 
-    public void sendDataToEnvironmentCentre() {
-        environmentCentre.sendData(this);
-    }
-
-    public void askEnvironmentCentreForPermission() {
-        environmentCentre.askPermission(this);
-    }
-
     public Crossroad getPosition() {
         return position;
     }
@@ -98,5 +96,10 @@ public class Car extends Thread{
 
     public Engine getEngineType() {
         return engineType;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Car #%s with %s engine.", this.carId, this.engineType.toString());
     }
 }

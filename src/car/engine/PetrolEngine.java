@@ -5,4 +5,9 @@ public class PetrolEngine implements Engine {
     public float emitPollution() {
         return 2f;
     }
+
+    @Override
+    public String toString() {
+        return "Petrol";
+    }
 }

@@ -5,4 +5,9 @@ public class ElectricEngine implements Engine {
     public float emitPollution() {
         return 0.1f;
     }
+
+    @Override
+    public String toString() {
+        return "Electric";
+    }
 }

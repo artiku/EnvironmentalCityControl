@@ -10,5 +10,7 @@ public class MaintenanceCrossroad extends Crossroad {
 
     @Override
     public void driveThrough(Car car) {
+        System.out.println("Maintenance");
+
     }
 }

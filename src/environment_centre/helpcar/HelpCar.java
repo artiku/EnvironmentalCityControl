@@ -4,10 +4,7 @@ import car.Car;
 import city.crossroad.Crossroad;
 import environment_centre.EnvironmentCentre;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static constants.Constants.CAR_LOWER_TRAVEL_LIMIT;
 import static constants.Constants.CAR_UPPER_TRAVEL_LIMIT;

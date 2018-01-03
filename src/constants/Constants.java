@@ -12,4 +12,5 @@ public class Constants {
     public final static int ICE_CARS_IN_TOWN_LIMIT = 70;
     public final static boolean CONSOLE_LOG_ON = false;
     public final static boolean CONSOLE_RED_LOG_ON = false;
+    public final static boolean BIRD_SING_CITY_MONITORING_INFO = true;
 }

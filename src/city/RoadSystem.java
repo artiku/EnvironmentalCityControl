@@ -10,7 +10,7 @@ public class RoadSystem {
     private Set<Road> roads = new HashSet<>();
     private Map<Crossroad, Set<Road>> cityRoads = new HashMap<>();
 
-    public boolean addroad(Road road) {
+    public boolean addRoad(Road road) {
         if (!roads.add(road)) return false;
 
         cityRoads.putIfAbsent(road.getCrossroadA(), new HashSet<>());

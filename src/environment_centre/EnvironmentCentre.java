@@ -4,9 +4,12 @@ import car.Car;
 import car.engine.DieselEngine;
 import car.engine.PetrolEngine;
 import city.RoadSystem;
+import environment_centre.helpcar.HelpCar;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -22,7 +25,8 @@ public class EnvironmentCentre {
     private AtomicInteger pollutionAmount = new AtomicInteger(0);
     private Thread timer;
     private AtomicBoolean timerStarted = new AtomicBoolean(false);
-    private List<Car> carsWantingHelp = new ArrayList<>();
+    private Set<Car> carsWantingHelp = new HashSet<>();
+    private boolean helpCarOnDuty = false;
 
     public EnvironmentCentre(RoadSystem roadSystem) {
         this.registeredCarsInTown = new ArrayList<>();
@@ -44,14 +48,14 @@ public class EnvironmentCentre {
     public synchronized boolean askPermission(Car car) throws InterruptedException {
         System.err.println(pollutionAmount.get());
         if (pollutionAmount.get() >= POLLUTION_DIESEL_ENGINE_LIMIT && car.getEngineType() instanceof DieselEngine) {
-             return this.startTimer(car);
+             return this.startTimerAndRestrictDriving(car);
         } else if (pollutionAmount.get() >= POLLUTION_PETROL_ENGINE_LIMIT && car.getEngineType() instanceof PetrolEngine) {
-            return this.startTimer(car);
+            return this.startTimerAndRestrictDriving(car);
         }
         return true;
     }
 
-    private synchronized boolean startTimer(Car car) throws InterruptedException {
+    private synchronized boolean startTimerAndRestrictDriving(Car car) throws InterruptedException {
         if (!timerStarted.get()) {
             System.err.println(pollutionAmount.get());
             timerStarted.set(true);
@@ -81,9 +85,21 @@ public class EnvironmentCentre {
                 car.getEngineType() instanceof PetrolEngine).collect(Collectors.toList()).size() >= ICE_CARS_IN_TOWN_LIMIT;
     }
 
-    public void callForHelp(Car car) {
+    public synchronized void callForHelp(Car car) {
         carsWantingHelp.add(car);
-        if (!helpCarOnTheRoad) helpCarHitTheRoad();
+        if (!helpCarOnDuty) hitTheRoadHelpCar(car);
+    }
+
+    private void hitTheRoadHelpCar(Car car) {
+        HelpCar helpCar = new HelpCar(car.getPosition(), carsWantingHelp,this);
+        helpCar.start();
+        helpCarOnDuty = true;
+        System.err.println("Help Car On Duty!");
+    }
+
+    public void finishHelpCarDuty() {
+        helpCarOnDuty = false;
+        System.err.println("Help Car Finishes It's Duty!");
     }
 
     public RoadSystem getCityRoadSystem() {

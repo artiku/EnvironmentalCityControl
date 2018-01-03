@@ -20,7 +20,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RoadController {
-    private EnvironmentCentre environmentCentre;
 
     public static void main(String[] args) {
         createCityRoadSystem();
@@ -45,23 +44,23 @@ public class RoadController {
         Crossroad crossroad10 = new Crossroad();
         Crossroad crossroad11 = new Crossroad();
 
-        roadSystem.addroad(new Road(crossroad, crossroad10, "York St"));
-        roadSystem.addroad(new Road(crossroad6, crossroad10, "Crawford St"));
-        roadSystem.addroad(new Road(crossroad6, crossroad1, "Porter St"));
-        roadSystem.addroad(new Road(crossroad10, crossroad8, "Dorset St"));
-        roadSystem.addroad(new Road(crossroad10, crossroad5, "Kenrick Pl"));
-        roadSystem.addroad(new Road(crossroad1, crossroad11, "Broadstone Pl"));
-        roadSystem.addroad(new Road(crossroad5, crossroad11, "Blandford St"));
-        roadSystem.addroad(new Road(crossroad5, crossroad8, "Baker St"));
-        roadSystem.addroad(new Road(crossroad4, crossroad8, "George St"));
-        roadSystem.addroad(new Road(crossroad4, crossroad2, "Gloucester Pl"));
-        roadSystem.addroad(new Road(crossroad9, crossroad4, "Aybrook St"));
-        roadSystem.addroad(new Road(crossroad9, crossroad3, "Cramer St"));
-        roadSystem.addroad(new Road(crossroad9, crossroad7, "Thayler St"));
+        roadSystem.addRoad(new Road(crossroad, crossroad10, "York St"));
+        roadSystem.addRoad(new Road(crossroad6, crossroad10, "Crawford St"));
+        roadSystem.addRoad(new Road(crossroad6, crossroad1, "Porter St"));
+        roadSystem.addRoad(new Road(crossroad10, crossroad8, "Dorset St"));
+        roadSystem.addRoad(new Road(crossroad10, crossroad5, "Kenrick Pl"));
+        roadSystem.addRoad(new Road(crossroad1, crossroad11, "Broadstone Pl"));
+        roadSystem.addRoad(new Road(crossroad5, crossroad11, "Blandford St"));
+        roadSystem.addRoad(new Road(crossroad5, crossroad8, "Baker St"));
+        roadSystem.addRoad(new Road(crossroad4, crossroad8, "George St"));
+        roadSystem.addRoad(new Road(crossroad4, crossroad2, "Gloucester Pl"));
+        roadSystem.addRoad(new Road(crossroad9, crossroad4, "Aybrook St"));
+        roadSystem.addRoad(new Road(crossroad9, crossroad3, "Cramer St"));
+        roadSystem.addRoad(new Road(crossroad9, crossroad7, "Thayler St"));
 
-        roadSystem.addroad(new BadOldRoad(crossroad3, crossroad7, "Montagu St"));
-        roadSystem.addroad(new BadOldRoad(crossroad4, crossroad7, "Berkeley St"));
-        roadSystem.addroad(new BadOldRoad(crossroad11, crossroad7, "Gloucester Palace Mews"));
+        roadSystem.addRoad(new BadOldRoad(crossroad3, crossroad7, "Montagu St"));
+        roadSystem.addRoad(new BadOldRoad(crossroad4, crossroad7, "Berkeley St"));
+        roadSystem.addRoad(new BadOldRoad(crossroad11, crossroad7, "Gloucester Palace Mews"));
 
         List<Crossroad> cityEntranceList = new ArrayList<>();
         cityEntranceList.add(crossroad);

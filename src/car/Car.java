@@ -47,12 +47,15 @@ public class Car extends Thread{
     }
 
     private void damageWheels() {
-        System.err.println("BREAK THE WHEELS!");
         if (!crazyMarmaladeWheels) wheelDamage++;
     }
 
     private boolean canDrive() {
-        if (!(wheelDamage < 3)) environmentCentre.callForHelp(this);
+        if (!(wheelDamage < 3)) {
+            environmentCentre.callForHelp(this);
+            System.err.println("CAR #" + this.getCarId() + " BROKE THE WHEELS!");
+        }
+
         return wheelDamage < 3;
     }
 
@@ -127,6 +130,10 @@ public class Car extends Thread{
 
     public void setEnvironmentCentre(EnvironmentCentre environmentCentre) {
         this.environmentCentre = environmentCentre;
+    }
+
+    public Crossroad getPosition() {
+        return position;
     }
 
     public int getCarId() {

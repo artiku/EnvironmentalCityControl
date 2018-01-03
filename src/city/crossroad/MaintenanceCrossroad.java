@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+import static constants.Constants.CONSOLE_LOG_ON;
 import static constants.Constants.FINISHED_MAINTENANCE_FILENAME;
 import static constants.Constants.MAINTENANCE_TIME;
 
@@ -25,7 +26,7 @@ public class MaintenanceCrossroad extends Crossroad {
     @Override
     public void driveThrough(Car car) {
         try {
-            System.out.println(String.format("Car #%s on the maintenance", car.getCarId()));
+            if (CONSOLE_LOG_ON) System.out.println(String.format("Car #%s on the maintenance", car.getCarId()));
 
             int timeToWait = MAINTENANCE_TIME * carNumberInQueue.incrementAndGet();
             Thread.sleep(timeToWait);
@@ -37,7 +38,7 @@ public class MaintenanceCrossroad extends Crossroad {
 
             String textInfo = String.format("%s finished maintenance at #%s crossroad and waited for %s ms\n",
                     car, this.getCrossroadId(), timeToWait);
-            System.out.print(textInfo);
+            if (CONSOLE_LOG_ON) System.out.print(textInfo);
 
             writeIntoLogFile(textInfo, FINISHED_MAINTENANCE_FILENAME);
         } catch (InterruptedException e) {

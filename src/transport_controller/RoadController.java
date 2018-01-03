@@ -1,5 +1,6 @@
 package transport_controller;
 
+import bird.SingingBird;
 import car.Car;
 import car.engine.DieselEngine;
 import car.engine.ElectricEngine;
@@ -59,7 +60,6 @@ public class RoadController {
         roadSystem.addRoad(new Road(crossroad9, crossroad7, "Thayler St"));
 
         roadSystem.addRoad(new BadOldRoad(crossroad3, crossroad7, "Montagu St"));
-        roadSystem.addRoad(new BadOldRoad(crossroad4, crossroad7, "Berkeley St"));
         roadSystem.addRoad(new BadOldRoad(crossroad11, crossroad7, "Gloucester Palace Mews"));
 
         List<Crossroad> cityEntranceList = new ArrayList<>();
@@ -68,8 +68,14 @@ public class RoadController {
         cityEntranceList.add(crossroad2);
         cityEntranceList.add(crossroad3);
 
-        testCarGroup(cityEntranceList);
-//        buildCars(cityEntranceList);
+//        testCarGroup(cityEntranceList);
+        buildCars(cityEntranceList);
+
+        flyBird(environmentCentre);
+    }
+
+    private static void flyBird(EnvironmentCentre ec) {
+        new SingingBird(ec).start();
     }
 
     private static void buildCars(List<Crossroad> cityEntranceList) {

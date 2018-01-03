@@ -11,6 +11,7 @@ import java.util.Set;
 
 import static constants.Constants.CAR_LOWER_TRAVEL_LIMIT;
 import static constants.Constants.CAR_UPPER_TRAVEL_LIMIT;
+import static constants.Constants.CONSOLE_RED_LOG_ON;
 
 public class HelpCar extends Thread{
 
@@ -49,7 +50,7 @@ public class HelpCar extends Thread{
             if (car.getPosition() == this.position) {
                 car.repairWheels();
                 found.add(car);
-                System.err.println("Car #" + car.getCarId() + " wheels was repaired!");
+                if (CONSOLE_RED_LOG_ON) System.err.println("Car #" + car.getCarId() + " wheels was repaired!");
             }
         }
         carsWantingHelp.removeAll(found);
@@ -58,7 +59,7 @@ public class HelpCar extends Thread{
     private void travel() {
         int travelTime = CAR_LOWER_TRAVEL_LIMIT + (int)(Math.random() * CAR_UPPER_TRAVEL_LIMIT);
 
-        System.err.println("Help car is searching for those who need help! (" + travelTime + "ms)");
+        if (CONSOLE_RED_LOG_ON) System.err.println("Help car is searching for those who need help! (" + travelTime + "ms)");
 
         try {
             Thread.sleep(travelTime);

@@ -14,9 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static constants.Constants.ICE_CARS_IN_TOWN_LIMIT;
-import static constants.Constants.POLLUTION_DIESEL_ENGINE_LIMIT;
-import static constants.Constants.POLLUTION_PETROL_ENGINE_LIMIT;
+import static constants.Constants.*;
 
 public class EnvironmentCentre {
 
@@ -46,7 +44,7 @@ public class EnvironmentCentre {
     }
 
     public synchronized boolean askPermission(Car car) throws InterruptedException {
-        System.err.println(pollutionAmount.get());
+//        if (CONSOLE_RED_LOG_ON) System.err.println(pollutionAmount.get());
         if (pollutionAmount.get() >= POLLUTION_DIESEL_ENGINE_LIMIT && car.getEngineType() instanceof DieselEngine) {
              return this.startTimerAndRestrictDriving(car);
         } else if (pollutionAmount.get() >= POLLUTION_PETROL_ENGINE_LIMIT && car.getEngineType() instanceof PetrolEngine) {
@@ -57,9 +55,9 @@ public class EnvironmentCentre {
 
     private synchronized boolean startTimerAndRestrictDriving(Car car) throws InterruptedException {
         if (!timerStarted.get()) {
-            System.err.println(pollutionAmount.get());
+            if (CONSOLE_RED_LOG_ON) System.err.println(pollutionAmount.get());
             timerStarted.set(true);
-            System.err.println("DIESEL or/and GASOLINE CARS SHOULD NOT PASS");
+            if (CONSOLE_RED_LOG_ON) System.err.println("DIESEL or/and GASOLINE CARS SHOULD NOT PASS");
             timer = new Thread(new Timer(this));
             timer.start();
         }
@@ -75,7 +73,7 @@ public class EnvironmentCentre {
         } else {
             pollutionAmount.set(0);
         }
-        System.err.println("PURIFIED to " + pollutionAmount.get());
+        if (CONSOLE_RED_LOG_ON) System.err.println("PURIFIED to " + pollutionAmount.get());
         notifyAll();
         timerStarted.set(false);
     }
@@ -94,12 +92,20 @@ public class EnvironmentCentre {
         HelpCar helpCar = new HelpCar(car.getPosition(), carsWantingHelp,this);
         helpCar.start();
         helpCarOnDuty = true;
-        System.err.println("Help Car On Duty!");
+        if (CONSOLE_RED_LOG_ON) System.err.println("Help Car On Duty!");
     }
 
     public void finishHelpCarDuty() {
         helpCarOnDuty = false;
-        System.err.println("Help Car Finishes It's Duty!");
+        if (CONSOLE_RED_LOG_ON) System.err.println("Help Car Finishes It's Duty!");
+    }
+
+    public int getCityPollution() {
+        return pollutionAmount.get();
+    }
+
+    public synchronized List<Car> getRegisteredCarsInTown() {
+        return registeredCarsInTown;
     }
 
     public RoadSystem getCityRoadSystem() {

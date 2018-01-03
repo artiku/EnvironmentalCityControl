@@ -10,8 +10,7 @@ import environment_centre.EnvironmentCentre;
 import java.util.Random;
 import java.util.Set;
 
-import static constants.Constants.CAR_LOWER_TRAVEL_LIMIT;
-import static constants.Constants.CAR_UPPER_TRAVEL_LIMIT;
+import static constants.Constants.*;
 
 public class Car extends Thread{
 
@@ -48,19 +47,18 @@ public class Car extends Thread{
 
     private void damageWheels() {
         if (!crazyMarmaladeWheels) wheelDamage++;
+        if (!(wheelDamage < 3) && CONSOLE_RED_LOG_ON) System.err.println("CAR #" + this.getCarId() + " BROKE THE WHEELS!");
     }
 
     private boolean canDrive() {
         if (!(wheelDamage < 3)) {
             environmentCentre.callForHelp(this);
-            System.err.println("CAR #" + this.getCarId() + " BROKE THE WHEELS!");
         }
 
         return wheelDamage < 3;
     }
 
     public void thinkAboutEngineReplacement() {
-        System.err.println(randomGenerator.nextInt(6));
         stopCount++;
         if (stopCount > 2 && randomGenerator.nextInt(6) == 0 && !(engineType instanceof ElectricEngine)) {
             engineReplacementNeeded = true;
@@ -105,7 +103,7 @@ public class Car extends Thread{
     private void travel() {
         int travelTime = CAR_LOWER_TRAVEL_LIMIT + (int)(Math.random() * CAR_UPPER_TRAVEL_LIMIT);
 
-        System.out.println(this + " Travelled " + travelTime + "ms and " + roadsDriven % 7 + " roads");
+        if (CONSOLE_LOG_ON) System.out.println(this + " Travelled " + travelTime + "ms and " + roadsDriven % 7 + " roads");
 
         try {
             Thread.sleep(travelTime);

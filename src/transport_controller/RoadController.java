@@ -83,12 +83,12 @@ public class RoadController {
         ExecutorService e = Executors.newFixedThreadPool(200);
         Random r = new Random();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 90; i++) {
             int randomIndex = r.nextInt(cityEntranceList.size());
             e.execute(new Car(cityEntranceList.get(randomIndex), new DieselEngine()));
         }
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 90; i++) {
             int randomIndex = r.nextInt(cityEntranceList.size());
             e.execute(new Car(cityEntranceList.get(randomIndex), new PetrolEngine()));
         }

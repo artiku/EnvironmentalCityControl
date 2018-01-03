@@ -28,4 +28,13 @@ public class RoadSystem {
                 .collect(Collectors.toSet());
     }
 
+    public Road findRoad(Crossroad crossroadA,Crossroad crossroadB) {
+        for (Road road : roads) {
+            if ((road.getCrossroadA() == crossroadA && road.getCrossroadB() == crossroadB) ||
+                    (road.getCrossroadA() == crossroadB && road.getCrossroadB() == crossroadA)) return road;
+        }
+        // Should never happen
+        return null;
+    }
+
 }

@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static constants.Constants.ICE_CARS_IN_TOWN_LIMIT;
 import static constants.Constants.POLLUTION_DIESEL_ENGINE_LIMIT;
 import static constants.Constants.POLLUTION_PETROL_ENGINE_LIMIT;
 
@@ -21,6 +22,7 @@ public class EnvironmentCentre {
     private AtomicInteger pollutionAmount = new AtomicInteger(0);
     private Thread timer;
     private AtomicBoolean timerStarted = new AtomicBoolean(false);
+    private List<Car> carsWantingHelp = new ArrayList<>();
 
     public EnvironmentCentre(RoadSystem roadSystem) {
         this.registeredCarsInTown = new ArrayList<>();
@@ -42,14 +44,14 @@ public class EnvironmentCentre {
     public synchronized boolean askPermission(Car car) throws InterruptedException {
         System.err.println(pollutionAmount.get());
         if (pollutionAmount.get() >= POLLUTION_DIESEL_ENGINE_LIMIT && car.getEngineType() instanceof DieselEngine) {
-             return this.startTimer();
+             return this.startTimer(car);
         } else if (pollutionAmount.get() >= POLLUTION_PETROL_ENGINE_LIMIT && car.getEngineType() instanceof PetrolEngine) {
-            return this.startTimer();
+            return this.startTimer(car);
         }
         return true;
     }
 
-    private synchronized boolean startTimer() throws InterruptedException {
+    private synchronized boolean startTimer(Car car) throws InterruptedException {
         if (!timerStarted.get()) {
             System.err.println(pollutionAmount.get());
             timerStarted.set(true);
@@ -57,6 +59,7 @@ public class EnvironmentCentre {
             timer = new Thread(new Timer(this));
             timer.start();
         }
+        car.thinkAboutEngineReplacement();
         wait();
         return false;
     }
@@ -75,7 +78,12 @@ public class EnvironmentCentre {
 
     private boolean numberOfInnerCombustionEnginesAboveLimit() {
         return registeredCarsInTown.parallelStream().filter(car -> car.getEngineType() instanceof DieselEngine ||
-                car.getEngineType() instanceof PetrolEngine).collect(Collectors.toList()).size() >= 70;
+                car.getEngineType() instanceof PetrolEngine).collect(Collectors.toList()).size() >= ICE_CARS_IN_TOWN_LIMIT;
+    }
+
+    public void callForHelp(Car car) {
+        carsWantingHelp.add(car);
+        if (!helpCarOnTheRoad) helpCarHitTheRoad();
     }
 
     public RoadSystem getCityRoadSystem() {

@@ -1,7 +1,10 @@
 package car;
 
+import car.engine.ElectricEngine;
 import car.engine.Engine;
+import car.engine.LemonadeEngine;
 import city.crossroad.Crossroad;
+import city.road.BadOldRoad;
 import environment_centre.EnvironmentCentre;
 
 import java.util.Random;
@@ -19,6 +22,10 @@ public class Car extends Thread{
     private Engine engineType;
     private static int carCounter = 0;
     private int carId = carCounter++;
+    private boolean engineReplacementNeeded = false;
+    private int stopCount = 0;
+    private int wheelDamage = 0;
+    private boolean crazyMarmaladeWheels = false;
 
 
     public Car(Crossroad startPosition, Engine engineType) {
@@ -30,16 +37,51 @@ public class Car extends Thread{
     @Override
     public void run() {
         while(!Thread.interrupted()) {
-            drive();
+            if (canDrive()) drive();
         }
     }
 
+    public void repairWheels() {
+        if (engineType instanceof ElectricEngine || engineType instanceof LemonadeEngine) crazyMarmaladeWheels = true;
+        wheelDamage = 0;
+    }
+
+    private void damageWheels() {
+        System.err.println("BREAK THE WHEELS!");
+        if (!crazyMarmaladeWheels) wheelDamage++;
+    }
+
+    private boolean canDrive() {
+        if (!(wheelDamage < 3)) environmentCentre.callForHelp(this);
+        return wheelDamage < 3;
+    }
+
+    public void thinkAboutEngineReplacement() {
+        System.err.println(randomGenerator.nextInt(6));
+        stopCount++;
+        if (stopCount > 2 && randomGenerator.nextInt(6) == 0 && !(engineType instanceof ElectricEngine)) {
+            engineReplacementNeeded = true;
+        }
+    }
+
+    public boolean isEngineReplacementNeeded() {
+        return engineReplacementNeeded;
+    }
+
+    public void changeEngine() {
+        this.engineType = new ElectricEngine();
+        engineReplacementNeeded = false;
+    }
 
     private void drive() {
 
         this.position.driveThrough(this);
         this.travel();
-        this.position = this.findNewDirection();
+
+        Crossroad newPos = this.findNewDirection();
+        if (environmentCentre.getCityRoadSystem().findRoad(this.position, newPos) instanceof BadOldRoad) damageWheels();
+        this.position = newPos;
+
         roadsDriven++;
         this.travelConditions();
     }
@@ -73,8 +115,7 @@ public class Car extends Thread{
         Set<Crossroad> adjacentCrossroads = environmentCentre.getCityRoadSystem().getAdjacentCrossroads(position);
         int randomIndex = this.randomGenerator.nextInt(adjacentCrossroads.size());
         int i = 0;
-        for(Crossroad crossroad : adjacentCrossroads)
-        {
+        for(Crossroad crossroad : adjacentCrossroads) {
             if (i == randomIndex) {
                 return crossroad;
             }

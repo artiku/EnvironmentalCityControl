@@ -7,4 +7,5 @@ public class Constants {
     public final static int MAINTENANCE_TIME = 50;
     public final static int POLLUTION_DIESEL_ENGINE_LIMIT = 4000;
     public final static int POLLUTION_PETROL_ENGINE_LIMIT = 5000;
+    public final static int ICE_CARS_IN_TOWN_LIMIT = 70;
 }

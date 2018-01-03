@@ -9,6 +9,7 @@ import city.RoadSystem;
 import city.crossroad.CityEntranceCrossroad;
 import city.crossroad.Crossroad;
 import city.crossroad.MaintenanceCrossroad;
+import city.road.BadOldRoad;
 import city.road.Road;
 import environment_centre.EnvironmentCentre;
 
@@ -57,6 +58,10 @@ public class RoadController {
         roadSystem.addroad(new Road(crossroad9, crossroad4, "Aybrook St"));
         roadSystem.addroad(new Road(crossroad9, crossroad3, "Cramer St"));
         roadSystem.addroad(new Road(crossroad9, crossroad7, "Thayler St"));
+
+        roadSystem.addroad(new BadOldRoad(crossroad3, crossroad7, "Montagu St"));
+        roadSystem.addroad(new BadOldRoad(crossroad4, crossroad7, "Berkeley St"));
+        roadSystem.addroad(new BadOldRoad(crossroad11, crossroad7, "Gloucester Palace Mews"));
 
         List<Crossroad> cityEntranceList = new ArrayList<>();
         cityEntranceList.add(crossroad);

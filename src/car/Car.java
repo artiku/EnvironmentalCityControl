@@ -14,16 +14,16 @@ import static constants.Constants.*;
 
 public class Car extends Thread{
 
-    private EnvironmentCentre environmentCentre;
-    private int roadsDriven = 0;
-    private Crossroad position;
     private Random randomGenerator = new Random();
+    private EnvironmentCentre environmentCentre;
+    private Crossroad position;
     private Engine engineType;
+    private int stopCount = 0;
+    private int wheelDamage = 0;
+    private int roadsDriven = 0;
     private static int carCounter = 0;
     private int carId = carCounter++;
     private boolean engineReplacementNeeded = false;
-    private int stopCount = 0;
-    private int wheelDamage = 0;
     private boolean crazyMarmaladeWheels = false;
 
 

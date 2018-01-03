@@ -19,11 +19,11 @@ import static constants.Constants.*;
 public class EnvironmentCentre {
 
     private List<Car> registeredCarsInTown;
-    private RoadSystem roadSystem;
-    private AtomicInteger pollutionAmount = new AtomicInteger(0);
-    private Thread timer;
-    private AtomicBoolean timerStarted = new AtomicBoolean(false);
     private Set<Car> carsWantingHelp = new HashSet<>();
+    private RoadSystem roadSystem;
+    private Thread timer;
+    private AtomicInteger pollutionAmount = new AtomicInteger(0);
+    private AtomicBoolean timerStarted = new AtomicBoolean(false);
     private boolean helpCarOnDuty = false;
 
     public EnvironmentCentre(RoadSystem roadSystem) {

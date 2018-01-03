@@ -8,7 +8,9 @@ import environment_centre.EnvironmentCentre;
 
 import java.util.stream.Collectors;
 
+import static constants.Constants.BIRD_SING_COOLDOWN;
 import static constants.Constants.CONSOLE_RED_LOG_ON;
+import static constants.Constants.POLLUTION_BIRD_LIMIT;
 
 
 public class SingingBird extends Thread {
@@ -25,7 +27,7 @@ public class SingingBird extends Thread {
             while(!Thread.interrupted()) {
                 this.sing();
                 if (CONSOLE_RED_LOG_ON) singMonitor();
-                    Thread.sleep(4000);
+                    Thread.sleep(BIRD_SING_COOLDOWN);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -33,7 +35,7 @@ public class SingingBird extends Thread {
     }
 
     private void sing() {
-        if (environmentCentre.getCityPollution() < 400) {
+        if (environmentCentre.getCityPollution() < POLLUTION_BIRD_LIMIT) {
             System.err.println("Puhas õhk on puhas õhk on rõõmus linnu elu!");
         } else {
             System.err.println("Inimene tark, inimene tark – saastet täis on linnapark");
